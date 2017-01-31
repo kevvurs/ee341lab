@@ -1,35 +1,37 @@
-% kevin
+% Kevin Caravaggio
+% EE 341 Lab 1
+% Ex1
+% Compose a few bars of Scarborough Fair w/ ADSR envelopes.
 
-% reset
+% reset MatLab
 clc;
 clear all;
 close all;
 
-% load resources
-wanda = imread('wanda_g.jpg');
-egg = imread('egg_g.jpg');
+% Time vectors and sampling constant.
+Fs = 8000;
+t_quart = 0:1/Fs:0.5-1/Fs;
+t_half = 0:1/Fs:1-1/Fs;
+t_full = 0:1/Fs:2-1/Fs;
 
-% smoother 5x5
-vect_struct = [ 1 1 1 1 1; 1 1 1 1 1; 1 1 1 1 1; 1 1 1 1 1; 1 1 1 1 1; ];
-vect_scalar = 1/9;
-hs = vect_scalar*vect_struct;
+% Compose scarborough fair
+a_full = mkNote(0,t_full);
+a_half = mkNote(0,t_half);
+a_quart = mkNote(0,t_quart);
+e_quart = mkNote(7,t_quart);
+b_quart = mkNote(2,t_quart);
+c_quart = mkNote(3,t_quart);
 
-% convolve
-wanda_alt = double(wanda);
-wanda_fx = conv2(wanda_alt,hs,'same');
-egg_alt = double(egg);
-egg_fx1 = conv2(egg_alt,hs,'same');
-egg_fx2 = conv2(egg_fx1,hs,'same');
+% Play the sound
+scarb = [a_half,a_quart,e_quart,e_quart,e_quart,b_quart,c_quart,b_quart,a_full];
+sound(scarb, Fs);
 
-% render
-% figure, imshow(uint8(wanda_fx)), title('Convolved once with 1/9 factor');
-% figure, imshow(wanda);
-  figure, imshow(uint8(egg_fx2)), title('Convolved twice with 1/9 factor');
-  figure, imshow(egg);
+% Depict the sound wave
+figure;
+plot(1:length(scarb),scarb);
 
-% Persist file:
-% imwrite(uint8(wanda_fx),'wanda_blur.jpg');
-% imwrite(uint8(egg_fx2),'egg_blur.jpg');
+% Persist .wav file:
+% audiowrite('scarb_raw.wav',scarb,Fs);
 
 fprintf('done\n');
-%EOF
+% EOF

@@ -1,23 +1,34 @@
-% kevin
+% Kevin Caravaggio
+% EE 341 Lab 1
+% Ex3
+% Make a white noise oscillating wave sound of the ocean.
 
-% reset
+% reset MatLab
 clc;
 clear all;
 close all;
 
-% load resources
-wanda = imread('wanda_g.jpg');
-egg = imread('egg_g.jpg');
+% time and frequency variables.
+Fs = 8000;
+t = 0:1/Fs:10-1/Fs;
+freq = pi/3;
+decay_rate = .3;
 
-% i, ii & iii, respectively
-wanda_rev = fliplr(wanda);
-wanda_flip = flipud(wanda);
-wanda_mirror = fliplr(flipud(wanda));
+% carrier and white noise signals.
+carrier = cos(freq*t)';
+noise = randn(length(t),1);
+decay = exp(-t*decay_rate)';
 
-% render
-figure, imshow(wanda_rev); % H-flip
-figure, imshow(wanda_flip); % V-flip
-figure, imshow(wanda_mirror); % Both
+% seaashell sound
+ocean = carrier .* noise .* decay;
+sound(ocean, Fs);
+
+% Depict the sound wave
+figure;
+plot(1:length(ocean),ocean), title('Ocean noise');
+
+% Persist .wav file:
+% audiowrite('ocean.wav',ocean,Fs);
 
 fprintf('done\n');
-%EOF
+% EOF

@@ -1,5 +1,5 @@
 ## EE 341 MatLab docs.
 
-### Lab 2 ###
+### Lab 1 ###
 
 _see master branch for more info_
