@@ -1,34 +1,29 @@
-% Kevin Caravaggio
-% EE 341 Lab 1
+% Kevin Caravagio and Andrew Chan
+% EE 341 LAB 0
 % Ex3
-% Make a white noise oscillating wave sound of the ocean.
 
-% reset MatLab
-clc;
-clear all;
+% Reset MatLab
 close all;
+clear all;
+clc;
 
-% time and frequency variables.
-Fs = 8000;
-t = 0:1/Fs:10-1/Fs;
-freq = pi/3;
-decay_rate = .3;
+% Load the cat sound and modulate it
+[y,Fs]=audioread('cat.wav');
+y1 = y;
+y2 = 0.25*y;
+y3 = 0.50*y;
 
-% carrier and white noise signals.
-carrier = cos(freq*t)';
-noise = randn(length(t),1);
-decay = exp(-t*decay_rate)';
+% concatenate the sounds into a signal
+delay = zeros(Fs,1);
+z = [y1;delay;y2;delay;y3;delay;y3;delay;y2;delay;y3;delay;y2;delay;y3;delay;y2;delay;y3;delay;y2;delay;y3;delay;y2;delay;y3;delay;y2;delay;y3];
 
-% seaashell sound
-ocean = carrier .* noise .* decay;
-sound(ocean, Fs);
+% Play sound:
+% sound(z,Fs);
 
-% Depict the sound wave
+% plot the signal
+t = (1:length(z))/Fs;
 figure;
-plot(1:length(ocean),ocean), title('Ocean noise');
+plot(t,z);
 
 % Persist .wav file:
-% audiowrite('ocean.wav',ocean,Fs);
-
-fprintf('done\n');
-% EOF
+% audiowrite('meowMeow.wav',z,Fs);

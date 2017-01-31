@@ -1,37 +1,28 @@
-% Kevin Caravaggio
-% EE 341 Lab 1
+% Kevin Caravagio and Andrew Chan
+% EE 341 LAB 0
 % Ex1
-% Compose a few bars of Scarborough Fair w/ ADSR envelopes.
 
-% reset MatLab
-clc;
-clear all;
+% Reset
 close all;
+clear all;
+clc;
 
-% Time vectors and sampling constant.
+% Create cos(200t)
 Fs = 8000;
-t_quart = 0:1/Fs:0.5-1/Fs;
-t_half = 0:1/Fs:1-1/Fs;
-t_full = 0:1/Fs:2-1/Fs;
+t = 0:1/Fs:5-1/Fs;
+x = cos(2*pi*200*t);
 
-% Compose scarborough fair
-a_full = mkNote(0,t_full);
-a_half = mkNote(0,t_half);
-a_quart = mkNote(0,t_quart);
-e_quart = mkNote(7,t_quart);
-b_quart = mkNote(2,t_quart);
-c_quart = mkNote(3,t_quart);
+% indexing vectors for discrete plotting 50 samples
+x_plot = x(1:50);
+t_plot = 1:50;
 
-% Play the sound
-scarb = [a_half,a_quart,e_quart,e_quart,e_quart,b_quart,c_quart,b_quart,a_full];
-sound(scarb, Fs);
-
-% Depict the sound wave
+% plots
 figure;
-plot(1:length(scarb),scarb);
+plot(t(1:50), x_plot);
 
-% Persist .wav file:
-% audiowrite('scarb_raw.wav',scarb,Fs);
+figure;
+stem(t_plot, x(1:50));
 
-fprintf('done\n');
-% EOF
+% Persist sound file:
+% audiowrite('cosine.wav',100*x,Fs);
+% sound(x,Fs);
