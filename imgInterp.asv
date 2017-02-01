@@ -1,0 +1,10 @@
+% kevin
+% interpole with fac. 3 with center points.
+function [img_intp] = imgInterp(img_filename)
+    img = imread(img_filename);
+    img_alt = double(img);
+    img_up = repelem(interp2(img_alt,1);
+    
+    img_intp = uint8(img_up);
+    return;
+end

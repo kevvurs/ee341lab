@@ -1,0 +1,22 @@
+% kevin
+
+% reset
+clc;
+clear all;
+close all;
+
+egg_min = scale('egg_g.jpg', 5);
+imshow(egg_min), title('Scaled by avg.');
+
+egg_min = scale('egg_g.jpg', 5);
+imshow(egg_min), title('Scaled by avg.');
+
+% Persist:
+% imwrite(egg_min, 'egg_g_min.jpg');
+
+
+% Persist:
+% imwrite(egg_min, 'egg_g_min.jpg');
+
+fprintf('done\n');
+%EOF
