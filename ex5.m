@@ -60,7 +60,7 @@ pwrng_conc = [pwrng_alpha; pwrng_beta; pwrng_chi];
 % Persist:
 % imwrite(pwrng_interp, 'pwrng_interp.jpg');
 % Persist:
-imwrite(uint8(pwrng_conc), 'pwrng_conc.jpg');
+% imwrite(uint8(pwrng_conc), 'pwrng_conc.jpg');
 
 % Render
 figure, imshow(pwrng), title('Original');
