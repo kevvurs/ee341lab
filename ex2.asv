@@ -1,0 +1,30 @@
+% kevin
+
+% reset
+clc;
+clear all;
+close all;
+
+% load resource
+S = load('microsoftstock.txt');
+len_S = 1:length(S);
+
+% constants
+Fs = 8000;
+Wc = 0.3;
+P = [ones(1,20) zeros(1,40)];
+
+% FIR/IIR
+V = zeros(1,11); V(1) = 1;
+A = fir1(10, Wc);
+B = butter(10, Wc,'high');
+
+F1 = filter(A,1,S)
+
+
+% render
+figure,impz(A,V),title('Finite Impulse Response (FIR)');
+figure,freqz(A,1),title('FIR Frequency Response');
+
+figure,impz(B,V),title('Infinite Impulse Response (IIR)');
+figure,freqz(B,1),title('IIR Frequency Response');
