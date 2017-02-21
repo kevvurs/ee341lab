@@ -19,19 +19,19 @@ M_alt_fft = fftshift(fft(M_alt, N));
 M_alt_fft_abs = abs(M_alt_fft);
 M_fft = fftshift(fft(M, N));
 M_fft_abs = abs(M_fft);
-w_period = 2*pi*Fs/N;
+w_period = Fs/N;
 w = (-N/2:(N/2)-1)*w_period;
 
 % Render:
 figure;
 subplot(2,2,1), plot(w, M_fft_abs), title('orignal sound'),
-    xlabel('freq.'), ylabel('magn.'), xlim([-20000, 20000]);
+    xlabel('freq (HZ)'), ylabel('magn.'), xlim([-20000, 20000]);
 subplot(2,2,2), plot(w, M_alt_fft_abs), title('filtered sound'),
-    xlabel('freq.'), ylabel('magn.'), xlim([-20000, 20000]);
+    xlabel('freq (HZ)'), ylabel('magn.'), xlim([-20000, 20000]);
 subplot(2,2,3), plot(w, M_fft_abs), title('vocal range- original'),
-    xlabel('freq.'), ylabel('magn.'), xlim([4000, 8000]);
+    xlabel('freq (HZ)'), ylabel('magn.'), xlim([4000, 8000]);
 subplot(2,2,4), plot(w, M_alt_fft_abs), title('vocal range- filter'),
-    xlabel('freq.'), ylabel('magn.'), xlim([4000, 8000]);
+    xlabel('freq (HZ)'), ylabel('magn.'), xlim([4000, 8000]);
 % Persist files:
 % audiowrite('music_boost.wav',M_alt,Ms);
 

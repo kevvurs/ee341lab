@@ -42,7 +42,7 @@ Y5_fft = fftshift(fft(Y5, N));
 Y5_fft_abs = abs(Y5_fft);
 Y6_fft = fftshift(fft(Y6, N));
 Y6_fft_abs = abs(Y6_fft);
-w_period = 2*pi*Fs/N;
+w_period = Fs/N;
 w = (-N/2:(N/2)-1)*w_period;
 
 figure;
@@ -50,8 +50,8 @@ subplot(3,2,1),plot(1:length(Y1), Y1),title('Stock Data Filtered by FIR'), xlabe
 subplot(3,2,2),plot(1:length(Y2), Y2),title('Stock Data Filtered by IIR'), xlabel('time'), ylabel('money');
 subplot(3,2,3),plot(1:length(Y3), Y3),title('Pulse_2_0 Filtered by FIR'), xlabel('time'), ylabel('value');
 subplot(3,2,4),plot(1:length(Y4), Y4),title('Pulse_2_0 Filtered by IIR'), xlabel('time'), ylabel('value');
-subplot(3,2,5),plot(w, Y5_fft_abs),title('music Filtered by FIR'), xlabel('freq.'), ylabel('magnitude');
-subplot(3,2,6),plot(w, Y6_fft_abs),title('music Filtered by IIR'), xlabel('freq.'), ylabel('magnitude');
+subplot(3,2,5),plot(w, Y5_fft_abs),title('music Filtered by FIR'), xlabel('freq (HZ)'), ylabel('magnitude');
+subplot(3,2,6),plot(w, Y6_fft_abs),title('music Filtered by IIR'), xlabel('freq (HZ)'), ylabel('magnitude');
 
 % Persist files:
 % audiowrite('FIR-music.wav',Y5,Ms);
