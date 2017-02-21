@@ -26,8 +26,8 @@ y3 = filter(d,c,S);
 len_y3 = 1:length(y3);
 
 % render
-% figure;
-% plot(len_S, S), title('Microsoft Stock');
+figure;
+plot(len_S, S), title('Microsoft Stock');
 
 figure;
 subplot(2,1,1), plot(len_y1, y1), ylim([0,50]), xlim([30 length(y1)]), title('Moving Av. (filter)');

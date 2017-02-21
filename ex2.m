@@ -6,7 +6,7 @@ clear all;
 close all;
 
 % constants
-Fs = 8000;
+Fs = 44100;
 Wc = 0.3;
 P = [ones(1,20) zeros(1,40)];
 
@@ -36,13 +36,22 @@ figure,freqz(A,1),title('FIR Frequency Response');
 figure,impz(B,V),title('Infinite Impulse Response (IIR)');
 figure,freqz(B,1),title('IIR Frequency Response');
 
+% Transforms:
+N = 22500;
+Y5_fft = fftshift(fft(Y5, N));
+Y5_fft_abs = abs(Y5_fft);
+Y6_fft = fftshift(fft(Y6, N));
+Y6_fft_abs = abs(Y6_fft);
+w_period = 2*pi*Fs/N;
+w = (-N/2:(N/2)-1)*w_period;
+
 figure;
-subplot(2,3,1),plot(1:length(Y1), Y1),title('Stock Data Filtered by FIR');
-subplot(2,3,2),plot(1:length(Y2), Y2),title('Stock Data Filtered by IIR');
-subplot(2,3,3),plot(1:length(Y3), Y3),title('Pulse_2_0 Filtered by FIR');
-subplot(2,3,4),plot(1:length(Y4), Y4),title('Pulse_2_0 Filtered by IIR');
-subplot(2,3,5),plot(1:length(Y5), Y5),title('music Filtered by FIR');
-subplot(2,3,6),plot(1:length(Y6), Y6),title('music Filtered by IIR');
+subplot(3,2,1),plot(1:length(Y1), Y1),title('Stock Data Filtered by FIR'), xlabel('time'), ylabel('money');
+subplot(3,2,2),plot(1:length(Y2), Y2),title('Stock Data Filtered by IIR'), xlabel('time'), ylabel('money');
+subplot(3,2,3),plot(1:length(Y3), Y3),title('Pulse_2_0 Filtered by FIR'), xlabel('time'), ylabel('value');
+subplot(3,2,4),plot(1:length(Y4), Y4),title('Pulse_2_0 Filtered by IIR'), xlabel('time'), ylabel('value');
+subplot(3,2,5),plot(w, Y5_fft_abs),title('music Filtered by FIR'), xlabel('freq.'), ylabel('magnitude');
+subplot(3,2,6),plot(w, Y6_fft_abs),title('music Filtered by IIR'), xlabel('freq.'), ylabel('magnitude');
 
 % Persist files:
 % audiowrite('FIR-music.wav',Y5,Ms);
