@@ -5,48 +5,63 @@ clc;
 clear all;
 close all;
 
-% load resource
-S = load('microsoftstock.txt');
-len_S = 1:length(S);
+% resources
+[M,Ms] = audioread('flute-short.wav');
 
-b = ones(30, 1);
-a = [30; zeros(29, 1)];
-y1 = filter(b,a,S);
-len_y1 = 1:length(y1);
+% x[n] =1+ cos(2? fn);0 ? n ?127
+n = 0:127;
+f = [0.25 0.50 0.26];
+x1 = 1 + cos(2*pi * f(1) * n);
+x2 = 1 + cos(2*pi * f(2) * n);
 
-h = filter(b,a,[1; zeros(29, 1)]);
-y2 = conv(S,h,'same');
-y2 = y2(1:length(y2)-30);
-len_y2 = 1:length(y2);
+% Transforms:
+y1 = fft(x1);
+y1_mag = abs(y1);
+y1_phase = angle(y1);
 
-% first diff filter- % 
-c = [1 0];
-d = [1 -1];
-y3 = filter(d,c,S);
-len_y3 = 1:length(y3);
+y1_shift = fftshift(fft(x1));
+y1_shift_mag = abs(y1_shift);
+y1_shift_phase = angle(y1_shift);
 
-% render
+y2 = fft(x2);
+y2_mag = abs(y2);
+y2_phase = angle(y2);
+
+y2_shift = fftshift(fft(x2));
+y2_shift_mag = abs(y2_shift);
+y2_shift_phase = angle(y2_shift);
+
+N1 = length(n);
+w_period = 1/N1;
+w = (-N1/2:(N1/2)-1)*w_period;
+
+N3 = [32 128 512];
+x3 = 1 + cos(2*pi * f(3) * n);
+y3_1 = abs(fftshift(fft(x3, N3(1))));
+y3_2 = abs(fftshift(fft(x3, N3(2))));
+y3_3 = abs(fftshift(fft(x3, N3(3))));
+w_periods = [1/N3(1) 1/N3(2) 1/N3(3)];
+w3_1 = (-N3(1)/2:(N3(1)/2)-1)*w_periods(1);
+w3_2 = (-N3(2)/2:(N3(2)/2)-1)*w_periods(2);
+w3_3 = (-N3(3)/2:(N3(3)/2)-1)*w_periods(3);
+
+M_trans = abs(fftshift(fft(M,Ms)));
+wM_period = 1/Ms;
+wM = ((-Ms/2):(Ms/2)-1) * wM_period;
+
+[maximum, index] = max(M_trans);
+note_in_hertz = Ms * abs(wM(index))
+
 figure;
-plot(len_S, S), title('Microsoft Stock');
+subplot(2,2,1),stem(w,y1_mag),title('X(w) when f = 0.25'),xlabel('freq(norm)');
+subplot(2,2,2),stem(w,y2_mag,'r'),title('X(w) when f = 0.50'),xlabel('freq(norm)');
+subplot(2,2,3),stem(w,y1_shift_mag),title('shifted X(w) when f = 0.25'),xlabel('freq(norm)');
+subplot(2,2,4),stem(w,y2_shift_mag,'r'),title('shifted X(w) when f = 0.50'),xlabel('freq(norm)');
 
 figure;
-subplot(2,1,1), plot(len_y1, y1), ylim([0,50]), xlim([30 length(y1)]), title('Moving Av. (filter)');
-subplot(2,1,2), plot(len_y2, y2), ylim([0,50]), xlim([30 length(y2)]), title('Moving Av. (conv)');
-
-figure; hold on;
-plot(len_S, S, 'blue');
-plot(len_y1, y1, 'red');
-title('Microsoft Stock');
-xlim([30 length(y1)]);
-
+subplot(3,1,1),stem(w3_1,y3_1),title('X(w),f=0.26,N=32'),xlabel('freq(norm)');
+subplot(3,1,2),stem(w3_2,y3_2),title('X(w),f=0.26,N=128'),xlabel('freq(norm)');
+subplot(3,1,3),stem(w3_3,y3_3),title('X(w),f=0.26,N=512'),xlabel('freq(norm)');
 
 figure;
-plot(len_y3, y3), title('Stock w/ First Difference filter');
-
-figure;
-freqz(d,c),title('First difference frequency response');
-figure;
-freqz(b,a),title('Moving avrg frequency response');
-
-fprintf('done\n');
-% EOF
+plot(wM, 20*log10(M_trans)),title('Flute note'),xlabel('normalized freq.');
