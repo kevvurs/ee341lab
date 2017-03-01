@@ -50,7 +50,7 @@ wM_period = 1/Ms;
 wM = ((-Ms/2):(Ms/2)-1) * wM_period;
 
 [maximum, index] = max(M_trans);
-note_in_hertz = Ms * abs(wM(index))
+note_in_hertz = Ms * abs(wM(index)) * 2
 
 figure;
 subplot(2,2,1),stem(w,y1_mag),title('X(w) when f = 0.25'),xlabel('freq(norm)');
@@ -64,4 +64,6 @@ subplot(3,1,2),stem(w3_2,y3_2),title('X(w),f=0.26,N=128'),xlabel('freq(norm)');
 subplot(3,1,3),stem(w3_3,y3_3),title('X(w),f=0.26,N=512'),xlabel('freq(norm)');
 
 figure;
-plot(wM, 20*log10(M_trans)),title('Flute note'),xlabel('normalized freq.');
+plot(wM, 20*log10(M_trans)),title('Flute note'),xlabel('normalized freq.'),ylabel('log magn.');
+
+fprintf('done\n')
